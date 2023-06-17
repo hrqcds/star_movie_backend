@@ -1,4 +1,4 @@
-import { IsNotEmpty, MinLength } from 'class-validator';
+import { IsNotEmpty, IsOptional, MinLength } from 'class-validator';
 
 export abstract class CreateUserDto {
   @IsNotEmpty()
@@ -23,6 +23,8 @@ export abstract class UpdateUserDto {
 export abstract class QueryUserDto {
   take: number;
   skip: number;
-  name: string;
-  email: string;
+  @IsOptional()
+  name?: string;
+  @IsOptional()
+  email?: string;
 }

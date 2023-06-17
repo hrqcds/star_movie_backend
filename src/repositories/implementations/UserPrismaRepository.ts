@@ -33,7 +33,7 @@ export class UserPrismaRepository implements IUserRepository {
   async list(query: QueryUserDto): Promise<ListUserResponse[]> {
     return await this.prisma.user.findMany({
       take: query.take,
-      skip: query.skip,
+      skip: query.skip * query.take,
       where: {
         name: {
           contains: query.name,
@@ -46,6 +46,18 @@ export class UserPrismaRepository implements IUserRepository {
         id: true,
         name: true,
         email: true,
+      },
+    });
+  }
+  async count(query: QueryUserDto): Promise<number> {
+    return await this.prisma.user.count({
+      where: {
+        name: {
+          contains: query.name,
+        },
+        email: {
+          contains: query.email,
+        },
       },
     });
   }
