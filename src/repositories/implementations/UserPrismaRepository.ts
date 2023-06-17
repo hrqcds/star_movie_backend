@@ -41,6 +41,7 @@ export class UserPrismaRepository implements IUserRepository {
         email: {
           contains: query.email,
         },
+        deleted_at: null,
       },
       select: {
         id: true,
@@ -58,6 +59,7 @@ export class UserPrismaRepository implements IUserRepository {
         email: {
           contains: query.email,
         },
+        deleted_at: null,
       },
     });
   }

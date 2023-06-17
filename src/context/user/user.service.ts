@@ -7,6 +7,7 @@ import {
   IUserRepository,
   ListUserResponse,
 } from 'src/repositories/IUserRepository';
+import { GeneratePassword } from 'src/utils/HashPassword';
 
 @Injectable()
 export class UserService {
@@ -23,10 +24,14 @@ export class UserService {
       throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
     }
 
+    password = GeneratePassword(password);
+
     return await this.userRepository.create({ name, email, password });
   }
 
   async list(query: QueryUser): Promise<DataResponse<ListUserResponse>> {
+    query.skip = Number(query.skip);
+    query.take = Number(query.take);
     const result = await this.userRepository.list(query);
     const total = await this.userRepository.count(query);
     return new DataResponse<ListUserResponse>(result, total);
@@ -50,9 +55,11 @@ export class UserService {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
 
-    const emailExist = await this.userRepository.findByEmail(email);
-    if (emailExist && emailExist.id !== id) {
-      throw new HttpException('Email already exists', HttpStatus.BAD_REQUEST);
+    if (email) {
+      const emailExist = await this.userRepository.findByEmail(email);
+      if (emailExist && emailExist.id !== id) {
+        throw new HttpException('Email already exists', HttpStatus.BAD_REQUEST);
+      }
     }
 
     const result = await this.userRepository.update(id, {

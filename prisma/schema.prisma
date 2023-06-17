@@ -9,28 +9,18 @@ datasource db {
 }
 
 model Movies {
-  id           String      @id @default(uuid())
-  title        String
-  note         Int?
-  img_url      String
-  categoriesId String?
-  Categories   Categories? @relation(fields: [categoriesId], references: [id])
-  userId       String?
-  User         User?       @relation(fields: [userId], references: [id])
-  posts        Posts[]
-  created_at   DateTime?   @default(now())
-  updated_at   DateTime?   @updatedAt
-  deleted_at   DateTime?
+  id         String    @id @default(uuid())
+  title      String
+  note       Int?
+  img_url    String
+  userId     String?
+  User       User?     @relation(fields: [userId], references: [id])
+  posts      Posts[]
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
+  deleted_at DateTime?
 
   @@map("movies")
-}
-
-model Categories {
-  id     String   @id @default(uuid())
-  name   String
-  movies Movies[]
-
-  @@map("categories")
 }
 
 model User {
@@ -40,7 +30,6 @@ model User {
   password   String
   movies     Movies[]
   postsId    String?
-  Posts      Posts?    @relation(fields: [postsId], references: [id])
   created_at DateTime? @default(now())
   updated_at DateTime? @updatedAt
   deleted_at DateTime?
@@ -49,11 +38,11 @@ model User {
 }
 
 model Posts {
-  id         String    @id @default(uuid())
-  title      String
-  content    String
-  note       Int?
-  user       User[]
+  id        String @id @default(uuid())
+  title     String
+  content   String
+  note      Int?
+  user_name String
   Movies     Movies?   @relation(fields: [moviesId], references: [id])
   moviesId   String?
   created_at DateTime? @default(now())
