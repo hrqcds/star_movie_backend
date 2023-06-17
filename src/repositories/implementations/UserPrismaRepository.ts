@@ -1,5 +1,5 @@
 import { User } from '@prisma/client';
-import { CreateUserDto, QueryUserDto, UpdateUserDto } from 'src/dtos/UserDto';
+import { CreateUserDto, QueryUser, UpdateUser } from 'src/dtos/UserDto';
 import {
   CreateUserResponse,
   IUserRepository,
@@ -30,7 +30,7 @@ export class UserPrismaRepository implements IUserRepository {
       },
     });
   }
-  async list(query: QueryUserDto): Promise<ListUserResponse[]> {
+  async list(query: QueryUser): Promise<ListUserResponse[]> {
     return await this.prisma.user.findMany({
       take: query.take,
       skip: query.skip * query.take,
@@ -49,7 +49,7 @@ export class UserPrismaRepository implements IUserRepository {
       },
     });
   }
-  async count(query: QueryUserDto): Promise<number> {
+  async count(query: QueryUser): Promise<number> {
     return await this.prisma.user.count({
       where: {
         name: {
@@ -76,7 +76,7 @@ export class UserPrismaRepository implements IUserRepository {
     });
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<boolean> {
+  async update(id: string, updateUserDto: UpdateUser): Promise<boolean> {
     const result = await this.prisma.user.update({
       where: {
         id: id,

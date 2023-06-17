@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
-import { CreateUserDto, QueryUserDto } from 'src/dtos/UserDto';
+import { CreateUserDto, QueryUser } from 'src/dtos/UserDto';
 import { DataResponse } from 'src/generics/DataResponse';
 import {
   CreateUserResponse,
@@ -26,7 +26,7 @@ export class UserService {
     return await this.userRepository.create({ name, email, password });
   }
 
-  async list(query: QueryUserDto): Promise<DataResponse<ListUserResponse>> {
+  async list(query: QueryUser): Promise<DataResponse<ListUserResponse>> {
     const result = await this.userRepository.list(query);
     const total = await this.userRepository.count(query);
     return new DataResponse<ListUserResponse>(result, total);
@@ -55,7 +55,16 @@ export class UserService {
       throw new HttpException('Email already exists', HttpStatus.BAD_REQUEST);
     }
 
-    return await this.userRepository.update(id, { name, email, password });
+    const result = await this.userRepository.update(id, {
+      name,
+      email,
+      password,
+    });
+
+    if (!result) {
+      throw new HttpException('Error updating user', HttpStatus.BAD_REQUEST);
+    }
+    return result;
   }
 
   async remove(id: string): Promise<boolean> {
@@ -65,6 +74,10 @@ export class UserService {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
 
-    return await this.userRepository.remove(id);
+    const result = await this.userRepository.remove(id);
+    if (!result) {
+      throw new HttpException('Error removing user', HttpStatus.BAD_REQUEST);
+    }
+    return result;
   }
 }

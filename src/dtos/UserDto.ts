@@ -10,7 +10,7 @@ export abstract class CreateUserDto {
   password: string;
 }
 
-export abstract class UpdateUserDto {
+export abstract class UpdateUser {
   @IsNotEmpty()
   name: string;
   @IsNotEmpty()
@@ -20,8 +20,10 @@ export abstract class UpdateUserDto {
   password: string;
 }
 
-export abstract class QueryUserDto {
+export abstract class QueryUser {
+  @IsNotEmpty()
   take: number;
+  @IsNotEmpty()
   skip: number;
   @IsOptional()
   name?: string;
