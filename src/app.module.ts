@@ -7,12 +7,17 @@ import { AuthModule } from './context/auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { JwtMiddleware } from './middleware/JwtMiddleware';
 import { JwtService } from '@nestjs/jwt';
+import { MovieModule } from './context/movie/movie.module';
 
 @Module({
   imports: [
     UserModule,
     AuthModule,
-    RouterModule.register([{ path: '/api', module: UserModule }]),
+    MovieModule,
+    RouterModule.register([
+      { path: '/api', module: UserModule },
+      { path: '/api', module: MovieModule },
+    ]),
     ConfigModule.forRoot(),
   ],
   controllers: [AppController],

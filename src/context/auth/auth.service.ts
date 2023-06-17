@@ -21,6 +21,8 @@ export class AuthService {
       throw new HttpException('Users or Password is Incorrect', 400);
     }
 
+    if (user.deleted_at) throw new HttpException('User deleted', 400);
+
     const token = sign(
       {
         id: user.id,
@@ -34,6 +36,7 @@ export class AuthService {
 
     return {
       token,
+      id: user.id,
       name: user.name,
       email: user.email,
     };

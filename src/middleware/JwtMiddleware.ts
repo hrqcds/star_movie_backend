@@ -12,9 +12,8 @@ export class JwtMiddleware implements NestMiddleware {
     }
 
     try {
-      const decoded = verify(token, process.env.JWT_SECRET);
+      verify(token, process.env.JWT_SECRET);
 
-      console.log(decoded);
       next();
     } catch (err) {
       return res.status(401).json({ message: 'Unauthorized' });
