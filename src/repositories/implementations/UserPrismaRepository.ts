@@ -1,6 +1,10 @@
 import { User } from '@prisma/client';
 import { CreateUserDto, QueryUserDto, UpdateUserDto } from 'src/dtos/UserDto';
-import { IUserRepository } from '../IUserRepository';
+import {
+  CreateUserResponse,
+  IUserRepository,
+  ListUserResponse,
+} from '../IUserRepository';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 
@@ -8,25 +12,81 @@ import { PrismaService } from 'src/database/prisma.service';
 export class UserPrismaRepository implements IUserRepository {
   constructor(private prisma: PrismaService) {}
 
-  async create({ name, email, password }: CreateUserDto): Promise<User> {
+  async create({
+    name,
+    email,
+    password,
+  }: CreateUserDto): Promise<CreateUserResponse> {
     return await this.prisma.user.create({
       data: {
         name,
         email,
         password,
       },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      },
     });
   }
-  list(query: QueryUserDto): Promise<User[]> {
-    throw new Error('Method not implemented.');
+  async list(query: QueryUserDto): Promise<ListUserResponse[]> {
+    return await this.prisma.user.findMany({
+      take: query.take,
+      skip: query.skip,
+      where: {
+        name: {
+          contains: query.name,
+        },
+        email: {
+          contains: query.email,
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      },
+    });
   }
-  find(id: string): Promise<User> {
-    throw new Error('Method not implemented.');
+  async find(id: string): Promise<User> {
+    return await this.prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
   }
-  update(id: string, updateUserDto: UpdateUserDto): Promise<boolean> {
-    throw new Error('Method not implemented.');
+  async findByEmail(email: string): Promise<User> {
+    return await this.prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
   }
-  remove(id: string): Promise<boolean> {
-    throw new Error('Method not implemented.');
+
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<boolean> {
+    const result = await this.prisma.user.update({
+      where: {
+        id: id,
+      },
+      data: {
+        name: updateUserDto.name,
+        email: updateUserDto.email,
+        password: updateUserDto.password,
+      },
+    });
+    return result ? true : false;
+  }
+  async remove(id: string): Promise<boolean> {
+    const result = await this.prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        deleted_at: new Date(),
+      },
+    });
+
+    return result ? true : false;
   }
 }
