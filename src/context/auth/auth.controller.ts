@@ -18,6 +18,7 @@ export class AuthController {
     email: string;
   }> {
     const result = await this.authService.signIn(request);
+
     return {
       token: result.token,
       id: result.id,
