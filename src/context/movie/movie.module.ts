@@ -5,6 +5,8 @@ import { IMovieRepository } from 'src/repositories/IMovieRepository';
 import { MoviePrismaRepository } from 'src/repositories/implementations/MoviePrismaRepository';
 import { MovieService } from './movie.service';
 import { MovieController } from './movie.controller';
+import { IUserRepository } from 'src/repositories/IUserRepository';
+import { UserPrismaRepository } from 'src/repositories/implementations/UserPrismaRepository';
 
 @Module({
   imports: [],
@@ -13,6 +15,7 @@ import { MovieController } from './movie.controller';
     MovieService,
     PrismaService,
     { provide: IMovieRepository, useClass: MoviePrismaRepository },
+    { provide: IUserRepository, useClass: UserPrismaRepository },
   ],
 })
 export class MovieModule {}

@@ -1,4 +1,9 @@
-import { CreateMovie, CreateMovieResponse } from 'src/dtos/MovieDto';
+import {
+  CreateMovie,
+  CreateMovieResponse,
+  QueryMovie,
+  UpdateMovie,
+} from 'src/dtos/MovieDto';
 import { IMovieRepository } from '../IMovieRepository';
 import { PrismaService } from 'src/database/prisma.service';
 import { Movies } from '@prisma/client';
@@ -32,5 +37,64 @@ export class MoviePrismaRepository implements IMovieRepository {
         title,
       },
     });
+  }
+
+  async list(query: QueryMovie): Promise<Movies[]> {
+    return await this.prisma.movies.findMany({
+      take: query.take,
+      skip: query.skip * query.take,
+      where: {
+        title: {
+          contains: query.title,
+        },
+        note: query.note,
+        deleted_at: null,
+      },
+      include: {
+        posts: true,
+      },
+    });
+  }
+
+  async count(query: QueryMovie): Promise<number> {
+    return await this.prisma.movies.count({
+      where: {
+        title: {
+          contains: query.title,
+        },
+        note: query.note,
+        deleted_at: null,
+      },
+    });
+  }
+
+  async find(id: string): Promise<Movies> {
+    return await this.prisma.movies.findUnique({
+      where: { id },
+      include: {
+        posts: true,
+        User: true,
+      },
+    });
+  }
+  async update(id: string, movie: UpdateMovie): Promise<boolean> {
+    const result = await this.prisma.movies.update({
+      where: { id },
+      data: {
+        title: movie.title,
+        description: movie.description,
+        img_url: movie.img_url,
+      },
+    });
+    return result ? true : false;
+  }
+  async remove(id: string): Promise<boolean> {
+    const result = await this.prisma.movies.update({
+      where: { id },
+      data: {
+        deleted_at: new Date(),
+      },
+    });
+    return result ? true : false;
   }
 }

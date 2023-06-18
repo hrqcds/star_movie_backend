@@ -31,6 +31,7 @@ model User {
   password   String
   movies     Movies[]
   postsId    String?
+  role       Role      @default(USER)
   created_at DateTime? @default(now())
   updated_at DateTime? @updatedAt
   deleted_at DateTime?
@@ -49,4 +50,9 @@ model Posts {
   created_at DateTime? @default(now())
 
   @@map("comments")
+}
+
+enum Role {
+  ADMIN
+  USER
 }

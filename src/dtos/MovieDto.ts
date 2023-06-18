@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumberString } from 'class-validator';
+import { IsNotEmpty, IsNumberString, IsOptional } from 'class-validator';
 
 export abstract class CreateMovieRequest {
   @IsNotEmpty()
@@ -19,10 +19,32 @@ export abstract class CreateMovie {
   userId: string;
 }
 
+export abstract class UpdateMovie {
+  @IsOptional()
+  title: string;
+  @IsOptional()
+  description: string;
+  @IsOptional()
+  img_url?: string;
+}
+
 export abstract class CreateMovieResponse {
   id: string;
   title: string;
   note: number;
   img_url: string;
   description: string;
+}
+
+export abstract class QueryMovie {
+  @IsNotEmpty()
+  @IsNumberString()
+  take: number;
+  @IsNotEmpty()
+  @IsNumberString()
+  skip: number;
+  @IsOptional()
+  title: string;
+  @IsOptional()
+  note: number;
 }
