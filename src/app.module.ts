@@ -8,15 +8,18 @@ import { ConfigModule } from '@nestjs/config';
 import { JwtMiddleware } from './middleware/JwtMiddleware';
 import { JwtService } from '@nestjs/jwt';
 import { MovieModule } from './context/movie/movie.module';
+import { PostModule } from './context/post/post.module';
 
 @Module({
   imports: [
     UserModule,
     AuthModule,
     MovieModule,
+    PostModule,
     RouterModule.register([
       { path: '/api', module: UserModule },
       { path: '/api', module: MovieModule },
+      { path: '/api', module: PostModule },
     ]),
     ConfigModule.forRoot(),
   ],

@@ -12,6 +12,29 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class MoviePrismaRepository implements IMovieRepository {
   constructor(private prisma: PrismaService) {}
+  async getNotes(id: string): Promise<Movies[]> {
+    return await this.prisma.movies.findMany({
+      where: {
+        id,
+        posts: {
+          some: {
+            note: 0,
+          },
+        },
+      },
+    });
+  }
+  async updateNote(id: string, note: number): Promise<boolean> {
+    const result = await this.prisma.movies.update({
+      where: {
+        id,
+      },
+      data: {
+        note,
+      },
+    });
+    return result ? true : false;
+  }
 
   async create(createMovie: CreateMovie): Promise<CreateMovieResponse> {
     return await this.prisma.movies.create({

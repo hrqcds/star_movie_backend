@@ -11,7 +11,7 @@ datasource db {
 model Movies {
   id          String    @id @default(uuid())
   title       String    @unique
-  note        Int?      @default(0)
+  note        Float?    @default(0)
   img_url     String
   description String
   userId      String?
@@ -43,7 +43,7 @@ model Posts {
   id         String    @id @default(uuid())
   title      String
   content    String
-  note       Int?
+  note       Float?    @default(0)
   user_name  String
   Movies     Movies?   @relation(fields: [moviesId], references: [id])
   moviesId   String?
