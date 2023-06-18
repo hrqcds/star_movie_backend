@@ -8,11 +8,13 @@ export class PostController {
 
   @Post()
   async create(@Body() body: CreatePost) {
-    return await this.postService.create(body);
+    await this.postService.create(body);
+    return 'Post created';
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    return await this.postService.remove(id);
+    await this.postService.remove(id);
+    return 'Post deleted';
   }
 }
