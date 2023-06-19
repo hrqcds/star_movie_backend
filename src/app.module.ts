@@ -9,6 +9,8 @@ import { JwtMiddleware } from './middleware/JwtMiddleware';
 import { JwtService } from '@nestjs/jwt';
 import { MovieModule } from './context/movie/movie.module';
 import { PostModule } from './context/post/post.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -16,6 +18,9 @@ import { PostModule } from './context/post/post.module';
     AuthModule,
     MovieModule,
     PostModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+    }),
     RouterModule.register([
       { path: '/api', module: UserModule },
       { path: '/api', module: MovieModule },

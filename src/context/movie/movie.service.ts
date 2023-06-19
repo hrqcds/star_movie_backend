@@ -38,7 +38,7 @@ export class MovieService {
       title: createMovie.title,
       userId: createMovie.userId,
       note: Number(createMovie.note),
-      img_url: file.filename,
+      img_url: 'http://localhost:' + process.env.PORT + '/' + file.filename,
       description: createMovie.description,
     });
   }
@@ -92,7 +92,7 @@ export class MovieService {
     return await this.movieRepository.update(id, {
       title: movie.title,
       description: movie.description,
-      img_url: file.filename,
+      img_url: 'http://localhost:' + process.env.PORT + '/' + file.filename,
     });
   }
 }
