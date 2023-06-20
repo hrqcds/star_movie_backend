@@ -4,8 +4,8 @@ generator client {
 
 datasource db {
   provider          = "postgresql"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  url               = "postgresql://postgres:DcbnvIyt4PwGKUp9OwpD@containers-us-west-79.railway.app:5942/railway"
+  shadowDatabaseUrl = "postgresql://postgres:DcbnvIyt4PwGKUp9OwpD@containers-us-west-79.railway.app:5942/railway"
 }
 
 model Movies {
