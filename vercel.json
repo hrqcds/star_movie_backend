@@ -1,5 +1,12 @@
 {
     "version": 2,
+    "env": {
+        "JWT_SECRET":"secret",
+        "PORT": "7000",
+        "IMG_URL":"http://localhost:",
+        "DATABASE_URL":"postgresql://postgres:DcbnvIyt4PwGKUp9OwpD@containers-us-west-79.railway.app:5942/railway",
+        "SHADOW_DATABASE_URL":"postgresql://postgres:DcbnvIyt4PwGKUp9OwpD@containers-us-west-79.railway.app:5942/railway"
+    },
     "builds": [
         {
             "src": "main.ts",
