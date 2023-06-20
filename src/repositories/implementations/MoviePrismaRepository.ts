@@ -73,6 +73,9 @@ export class MoviePrismaRepository implements IMovieRepository {
         note: query.note,
         deleted_at: null,
       },
+      orderBy: {
+        created_at: 'desc',
+      },
       include: {
         posts: true,
       },

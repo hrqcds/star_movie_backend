@@ -30,7 +30,6 @@ model User {
   email      String    @unique
   password   String
   movies     Movies[]
-  postsId    String?
   role       Role      @default(USER)
   created_at DateTime? @default(now())
   updated_at DateTime? @updatedAt
