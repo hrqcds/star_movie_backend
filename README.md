@@ -25,3 +25,8 @@
 
 - Após gerar o build do NestJS, execute o projeto a partir dos arquivos de saída gerados ou execute o comando:
 - npm run start:prod ou yarn start:prod
+
+## Alternativa docker
+- Rode o comando `docker build -t nest-cloud-run .` para gerar o build da aplicação
+- Rode o comando `docker run -p <PORT>:<PORT> nest-cloud-run
+ 
